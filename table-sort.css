@@ -1,0 +1,99 @@
+.table-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.table-row {
+    order: calc(var(--order) * var(--sort-order, -1));
+}
+
+#sort-by-published:checked ~ .table > .table-body > .table-row {
+    --order: var(--order-by-published);
+}
+
+#sort-by-views:checked ~ .table > .table-body > .table-row {
+    --order: var(--order-by-views);
+}
+
+#sort-ascending:checked + .table {
+    --sort-order: 1;
+}
+
+#sort-by-name:checked ~ #sort-ascending:checked + .table > .table-body {
+    flex-direction: column-reverse;
+}
+
+/* Then, everything else: table display, input controls etc. */
+
+.table-wrapper > input {
+    position: fixed;
+    left: 0;
+    right: 0;
+    clip: rect(1px,1px,1px,1px);
+    visibility: hidden;
+}
+
+.table,
+.table-caption,
+.table-head {
+    display: block;
+    margin: 0;
+}
+
+.table-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 7em 4.3em;
+}
+
+.table-cell {
+    text-align: right;
+    padding: 0.25em 0.5em;
+    white-space: nowrap;
+}
+
+.table-cell:first-child {
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-orderer {
+    display: none;
+}
+
+.table-head .table-cell {
+    position: relative;
+    display: flex;
+    user-select: none;
+}
+
+.table-head .table-cell:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.table-head .table-cell:not(:first-child) {
+    flex-direction: row-reverse;
+}
+
+.table-sorter:before,
+.table-orderer:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+
+#sort-by-name:checked ~ .table .table-sorter[for=sort-by-name] ~ .table-orderer,
+#sort-by-published:checked ~ .table .table-sorter[for=sort-by-published] ~ .table-orderer,
+#sort-by-views:checked ~ .table .table-sorter[for=sort-by-views] ~ .table-orderer {
+    display: inline;
+}
+
+#sort-ascending:checked + .table .table-orderer[for=sort-ascending],
+#sort-ascending:not(:checked) + .table .table-orderer[for=sort-descending] {
+    display: none !important;
+}
